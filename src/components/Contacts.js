@@ -31,7 +31,7 @@ async function registerBackgroundFetchAsync() {
     });
 }
 
-export const Contacts = ({ children }) => {
+export const Contacts = ({ onGetContacts = () => {} }) => {
     const [contacts, setContacts] = useState([]);
 
     useEffect(() => {
@@ -47,10 +47,7 @@ export const Contacts = ({ children }) => {
                             phoneNumbers: contact.phoneNumbers,
                         };
                     });
-                    console.log(
-                        ":::useEffect formattedContacts ->",
-                        formattedContacts
-                    );
+                    onGetContacts(formattedContacts);
                     setContacts(formattedContacts);
                 }
             }
@@ -59,5 +56,5 @@ export const Contacts = ({ children }) => {
         registerBackgroundFetchAsync();
     }, []);
 
-    return children({ contacts });
+    return null;
 };

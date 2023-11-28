@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import { PermissionsAndroid } from "react-native";
 import CallLogs from "react-native-call-log";
 
-const CallLog = () => {
+const CallLog = ({ onGetCallLog = () => {} }) => {
     const getCallLog = async () => {
         try {
             const granted = await PermissionsAndroid.request(
@@ -17,7 +17,7 @@ const CallLog = () => {
                 }
             );
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                CallLogs.load(5).then((c) => console.log(":::Call Log ->", c));
+                CallLogs.load(100).then((c) => onGetCallLog(c));
             } else {
                 console.log(":::Call Log permission denied");
             }
@@ -30,11 +30,7 @@ const CallLog = () => {
         getCallLog();
     }, []);
 
-    return (
-        <View>
-            <Text>CallLog</Text>
-        </View>
-    );
+    return null;
 };
 
 export default CallLog;

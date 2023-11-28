@@ -54,11 +54,7 @@ const SMSListener = () => {
         };
     }, []);
 
-    return (
-        <View>
-            <Text>SMSListener</Text>
-        </View>
-    );
+    return null;
 };
 
 export default SMSListener;

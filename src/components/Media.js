@@ -26,11 +26,7 @@ const Media = () => {
             requestPermission();
         }
     }, [permissionResponse]);
-    return (
-        <View>
-            <Text>Media</Text>
-        </View>
-    );
+    return null;
 };
 
 export default Media;
