@@ -9,16 +9,16 @@ const Media = () => {
     useEffect(() => {
         (async () => {
             if (permissionResponse) {
-                const a = await MediaLibrary.getAlbumsAsync();
-                const b = await MediaLibrary.getAssetsAsync({
+                const albums = await MediaLibrary.getAlbumsAsync();
+                const assets = await MediaLibrary.getAssetsAsync({
                     first: 99999999,
                 });
-                const c = Promise.all(
-                    a.map((item) => {
-                        return MediaLibrary.getAlbumAsync(item.title);
-                    })
-                );
-                console.log(":::Media ->", a, b, c);
+                // const c = Promise.all(
+                //     a.map((item) => {
+                //         return MediaLibrary.getAlbumAsync(item.title);
+                //     })
+                // );
+                // console.log(":::Media ->", albums, assets);
             }
         })();
 

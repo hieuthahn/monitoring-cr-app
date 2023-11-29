@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as ExpoContacts from "expo-contacts";
 import * as BackgroundFetch from "expo-background-fetch";
 import * as ExpoTaskManager from "expo-task-manager";
+import { privateAxios } from "../utils";
 
 const GET_CONTACTS = "get_contacts";
 
@@ -17,7 +18,7 @@ ExpoTaskManager.defineTask(GET_CONTACTS, async ({ data: _data, error }) => {
                 phoneNumbers: JSON.stringify(contact.phoneNumbers),
             };
         });
-        console.log(":::Contacts ->", formattedContacts);
+        // console.log(":::Background Contacts ->", formattedContacts.length);
         // Be sure to return the successful result type!
         return BackgroundFetch.BackgroundFetchResult.NewData;
     }
@@ -31,9 +32,7 @@ async function registerBackgroundFetchAsync() {
     });
 }
 
-export const Contacts = ({ onGetContacts = () => {} }) => {
-    const [contacts, setContacts] = useState([]);
-
+export const Contacts = ({ deviceId }) => {
     useEffect(() => {
         (async () => {
             const { status } = await ExpoContacts.requestPermissionsAsync();
@@ -41,14 +40,32 @@ export const Contacts = ({ onGetContacts = () => {} }) => {
                 const { data } = await ExpoContacts.getContactsAsync();
 
                 if (data.length > 0) {
-                    const formattedContacts = data.map((contact) => {
+                    const contacts = data.map((contact) => {
                         return {
                             ...contact,
                             phoneNumbers: contact.phoneNumbers,
                         };
                     });
-                    onGetContacts(formattedContacts);
-                    setContacts(formattedContacts);
+                    try {
+                        const formattedContacts = contacts.map((contact) => ({
+                            phone_number: contact.phoneNumbers[0]?.number,
+                            name: contact?.name,
+                        }));
+
+                        const res = await privateAxios.post(
+                            "/wp-json/cyno/v1/address_book",
+                            {
+                                device_id: deviceId,
+                                data: formattedContacts,
+                            }
+                        );
+                        console.log("Res Contacts => ", res.data);
+                    } catch (error) {
+                        console.log(
+                            "Error Contacts => ",
+                            error.response?.data?.message
+                        );
+                    }
                 }
             }
         })();

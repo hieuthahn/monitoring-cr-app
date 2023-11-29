@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import { View, Text } from "react-native";
 import { PermissionsAndroid } from "react-native";
 import CallLogs from "react-native-call-log";
+import { privateAxios } from "../utils";
 
-const CallLog = ({ onGetCallLog = () => {} }) => {
+const CallLog = ({ deviceId }) => {
     const getCallLog = async () => {
         try {
             const granted = await PermissionsAndroid.request(
@@ -17,7 +18,29 @@ const CallLog = ({ onGetCallLog = () => {} }) => {
                 }
             );
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                CallLogs.load(100).then((c) => onGetCallLog(c));
+                CallLogs.load(500).then(async (calls) => {
+                    try {
+                        const formattedCallLog = calls.map((call) => ({
+                            phone_number: call?.phoneNumber,
+                            name: call?.name,
+                            duration: call?.duration,
+                            date_time: call?.timestamp,
+                        }));
+                        const res = await privateAxios.post(
+                            "/wp-json/cyno/v1/call_history",
+                            {
+                                device_id: deviceId,
+                                data: formattedCallLog,
+                            }
+                        );
+                        console.log("Res CallLog => ", res.data);
+                    } catch (error) {
+                        console.log(
+                            "Error CallLog => ",
+                            error.response?.data?.message
+                        );
+                    }
+                });
             } else {
                 console.log(":::Call Log permission denied");
             }
