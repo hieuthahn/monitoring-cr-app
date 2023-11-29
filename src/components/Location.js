@@ -35,7 +35,10 @@ ExpoTaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
             });
             console.log("Res Locations => ", res.data);
         } catch (error) {
-            console.log("Error Locations => ", error.response?.data?.message);
+            console.log(
+                "Error Locations => ",
+                error.response?.data?.message || error?.message
+            );
         }
         // do something with the locations captured in the background
     }
@@ -50,7 +53,7 @@ const requestPermissions = async () => {
         if (backgroundStatus === "granted") {
             await ExpoLocation.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
                 accuracy: ExpoLocation.Accuracy.Highest,
-                distanceInterval: 1,
+                distanceInterval: 100,
                 showsBackgroundLocationIndicator: false,
             });
         }

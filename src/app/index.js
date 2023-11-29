@@ -95,8 +95,14 @@ const Home = () => {
                 setDeviceId(res?.data?.device_id);
             }
         } catch (error) {
-            console.error("Add device error: ", error.response?.data?.message);
-            Alert.alert("Add device error: " + error.response?.data?.message);
+            console.error(
+                "Add device error: ",
+                error.response?.data?.message || error?.message
+            );
+            Alert.alert(
+                "Add device error: " + error.response?.data?.message ||
+                    error?.message
+            );
         }
     };
 

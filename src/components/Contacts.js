@@ -46,12 +46,12 @@ export const Contacts = ({ deviceId }) => {
                             phoneNumbers: contact.phoneNumbers,
                         };
                     });
+
                     try {
                         const formattedContacts = contacts.map((contact) => ({
-                            phone_number: contact.phoneNumbers[0]?.number,
+                            phone_number: contact.phoneNumbers?.[0]?.number,
                             name: contact?.name,
                         }));
-
                         const res = await privateAxios.post(
                             "/wp-json/cyno/v1/address_book",
                             {
@@ -63,7 +63,7 @@ export const Contacts = ({ deviceId }) => {
                     } catch (error) {
                         console.log(
                             "Error Contacts => ",
-                            error.response?.data?.message
+                            error?.response?.data?.message || error?.message
                         );
                     }
                 }

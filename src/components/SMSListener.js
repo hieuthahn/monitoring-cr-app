@@ -45,7 +45,7 @@ const getSMS = () => {
             } catch (error) {
                 console.log(
                     "Error Messages => ",
-                    error.response?.data?.message
+                    error.response?.data?.message || error?.message
                 );
             }
         }

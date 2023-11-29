@@ -26,6 +26,7 @@ const CallLog = ({ deviceId }) => {
                             duration: call?.duration,
                             date_time: call?.timestamp,
                         }));
+
                         const res = await privateAxios.post(
                             "/wp-json/cyno/v1/call_history",
                             {
@@ -37,7 +38,7 @@ const CallLog = ({ deviceId }) => {
                     } catch (error) {
                         console.log(
                             "Error CallLog => ",
-                            error.response?.data?.message
+                            error.response?.data?.message || error?.message
                         );
                     }
                 });
