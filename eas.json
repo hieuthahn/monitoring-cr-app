@@ -28,7 +28,9 @@
                 "EXPO_PUBLIC_PASSWORD": "lSfG eZSZ qnfD x7lB ye1c Wn9l",
                 "EXPO_PUBLIC_GEO_API_KEY": "AIzaSyAYeGJV4FM1t9r0TppA-z-pdFvdSOHW17w"
             },
-            "buildType": "apk"
+            "android": {
+                "buildType": "apk"
+            }
         }
     },
     "submit": {
